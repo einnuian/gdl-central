@@ -1,0 +1,8 @@
+node_modules
+credentials.json
+.DS_Store
+node_modules/
+build/
+.env
+nodesource_setup.sh
+*.md
