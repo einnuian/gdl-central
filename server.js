@@ -14,7 +14,7 @@ const { renderTemplate } = require('./templatehandler');
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, 'client/dist')));
 
 // Google Sheets API setup
 const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
@@ -146,7 +146,7 @@ app.post('/api/fill-pdf', async (req, res) => {
 
 // Serve React app for all other routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'client/dist', 'index.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
