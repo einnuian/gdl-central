@@ -17,10 +17,16 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Google Sheets API setup
+const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 const auth = new google.auth.GoogleAuth({
-  keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS || 'credentials.json',
+  credentials,
   scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
-});
+})
+
+//const auth = new google.auth.GoogleAuth({
+//  keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+//  scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+//});
 
 const sheets = google.sheets({ version: 'v4', auth });
 
