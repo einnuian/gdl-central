@@ -119,10 +119,6 @@ function fillUPD7Data(reportPDF, reportData) {
             }
         }
     }
-    else {
-        peg.text = '';
-        grb.text = '';
-    }
 
     const reportMethylFields = [
         peg, grb
