@@ -99,25 +99,27 @@ function fillUPD7Data(reportPDF, reportData) {
 
     let peg = {text: 'Normal', x: 494, y: 343};
     let grb = {text: 'Normal', x: 494, y: 381};
-    if (test.includes('methyl') && methylResult === 'normal') {
-        if (upd7Result !== 'normal') {
-            if (upd7Result.includes('lom peg')) {               
-                peg.text = 'Loss of Methylation';
-                peg.x = 440;
-            }
-            else if (upd7Result.includes('gom peg')) {
-                peg.text = 'Gain of Methylation';
-                peg.x = 440;
-            }
-            if (upd7Result.includes('lom grb')) {
-                grb.text = 'Loss of Methylation';
-                grb.x = 440;
-            }
-            else if (upd7Result.includes('gom grb')) {
-                grb.text = 'Gain of Methylation';
-                grb.x = 440;
-            }
+    if (upd7Result !== 'normal') {
+        if (upd7Result.includes('lom peg')) {               
+            peg.text = 'Loss of Methylation';
+            peg.x = 463;
         }
+        else if (upd7Result.includes('gom peg')) {
+            peg.text = 'Gain of Methylation';
+            peg.x = 463;
+        }
+        if (upd7Result.includes('lom grb')) {
+            grb.text = 'Loss of Methylation';
+            grb.x = 463;
+        }
+        else if (upd7Result.includes('gom grb')) {
+            grb.text = 'Gain of Methylation';
+            grb.x = 463;
+        }
+    }
+    if (test.includes('methyl') && methylResult !== 'normal') {
+        peg.text = '';
+        grb.text = '';
     }
 
     const reportMethylFields = [
