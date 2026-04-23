@@ -1,14 +1,9 @@
-import React, { useState, useMemo, useRef } from 'react';
-import { useReactToPrint } from 'react-to-print';
-import BWRFlowsheet from './print_templates/BWRFlowsheet';
-import BWSFlowsheet from './print_templates/BWSFlowsheet';
+import React, { useState, useMemo } from 'react';
 
 const DataViewer = ({ data }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(20);
-  const [printTemplates, setPrintTemplates] = useState({});
-  const printRef = useRef();
 
   // Define the specific columns you want to display
   const displayColumns = useMemo(() => [
@@ -66,13 +61,6 @@ const DataViewer = ({ data }) => {
     setCurrentPage(page);
   };
 
-  const handleTemplateChange = (patientNumber, template) => {
-    setPrintTemplates(prev => ({
-      ...prev,
-      [patientNumber]: template
-    }));
-  };
-
   // Print handler: opens the PDF in a new tab
   const handlePrint = (printData) => {
     fetch('/api/fill-pdf', {
@@ -87,22 +75,6 @@ const DataViewer = ({ data }) => {
     });
   };
 
-  const renderPrintTemplate = (patient) => {
-    if (!patient) return null;
-    
-    const template = printTemplates[patient['Patient Number']] || 'bwr';
-    const flowsheetProps = { data, patient };
-    
-    switch (template) {
-      case 'bws':
-        return <BWSFlowsheet {...flowsheetProps} />;
-      case 'bwr':
-        return <BWRFlowsheet {...flowsheetProps} />;
-      default:
-        return <BWRFlowsheet {...flowsheetProps} />;
-    }
-  };
-
   if (!data || !data.data || data.data.length === 0) {
     return <div className="text-center p-10 text-gray-500 italic">No data available to display.</div>;
   }
@@ -112,19 +84,19 @@ const DataViewer = ({ data }) => {
       <h2 className="text-2xl text-gray-800 mb-8">Data Preview</h2>
       
       <div className="flex gap-5 mb-8 flex-wrap">
-        <div className="bg-gray-50 px-5 py-4 rounded-lg border-l-4 border-indigo-400">
+        <div className="bg-brand-light px-5 py-4 rounded-lg border-l-4 border-brand-blue">
           <div className="text-sm text-gray-600 mb-1">Total Samples</div>
           <div className="text-2xl font-semibold text-gray-800">{totalSamples}</div>
         </div>
-        <div className="bg-gray-50 px-5 py-4 rounded-lg border-l-4 border-indigo-400">
+        <div className="bg-brand-light px-5 py-4 rounded-lg border-l-4 border-brand-blue">
           <div className="text-sm text-gray-600 mb-1">Completed</div>
           <div className="text-2xl font-semibold text-gray-800">{completedSamples}</div>
         </div>
-        <div className="bg-gray-50 px-5 py-4 rounded-lg border-l-4 border-indigo-400">
+        <div className="bg-brand-light px-5 py-4 rounded-lg border-l-4 border-brand-blue">
           <div className="text-sm text-gray-600 mb-1">Under Reviewed</div>
           <div className="text-2xl font-semibold text-gray-800">{reviewingSamples}</div>
         </div>
-        <div className="bg-gray-50 px-5 py-4 rounded-lg border-l-4 border-indigo-400">
+        <div className="bg-brand-light px-5 py-4 rounded-lg border-l-4 border-brand-blue">
           <div className="text-sm text-gray-600 mb-1">Pending</div>
           <div className="text-2xl font-semibold text-gray-800">{filteredActive.length}</div>
         </div>
@@ -139,7 +111,7 @@ const DataViewer = ({ data }) => {
             setSearchTerm(e.target.value);
             setCurrentPage(1);
           }}
-          className="px-4 py-2 border-2 border-gray-200 rounded-lg text-base min-w-[250px] focus:outline-none focus:border-indigo-400"
+          className="px-4 py-2 border-2 border-gray-200 rounded-lg text-base min-w-[250px] focus:outline-none focus:border-brand-blue"
         />
         <div>
           Showing {startIndex + 1}-{Math.min(endIndex, filteredActive.length)} of {filteredActive.length} results
@@ -159,7 +131,7 @@ const DataViewer = ({ data }) => {
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`px-3 py-2 border border-gray-200 rounded ${currentPage === page ? 'bg-indigo-500 text-white border-indigo-500' : 'bg-white hover:bg-gray-50'}`}
+              className={`px-3 py-2 border border-gray-200 rounded ${currentPage === page ? 'bg-brand-blue text-white border-brand-blue' : 'bg-white hover:bg-brand-light'}`}
             >
               {page}
             </button>
@@ -179,34 +151,24 @@ const DataViewer = ({ data }) => {
           <thead>
             <tr>
               {filteredHeaders.map((header, index) => (
-                <th key={index} className="bg-gray-50 px-4 py-3 text-left font-semibold text-gray-800 border-b-2 border-gray-200 sticky top-0 z-10">{header}</th>
+                <th key={index} className="bg-brand-light px-4 py-3 text-left font-semibold text-brand-navy border-b-2 border-brand-teal sticky top-0 z-10">{header}</th>
               ))}
-              <th className="bg-gray-50 px-4 py-3 text-left font-semibold text-gray-800 border-b-2 border-gray-200 sticky top-0 z-10">Print</th>
+              <th className="bg-brand-light px-4 py-3 text-left font-semibold text-brand-navy border-b-2 border-brand-teal sticky top-0 z-10">Print</th>
             </tr>
           </thead>
           <tbody>
             {currentData.map((row, rowIndex) => (
-              <tr key={rowIndex} className="hover:bg-gray-50">
+              <tr key={rowIndex} className="odd:bg-white even:bg-gray-100 hover:bg-brand-light">
                 {filteredHeaders.map((header, colIndex) => (
                   <td key={colIndex} className="px-4 py-3 border-b border-gray-200 text-gray-700">{row[header] || ''}</td>
                 ))}
                 <td className="px-4 py-3 border-b border-gray-200">
-                  <div className="flex items-center gap-2">
-                    <select
-                      value={printTemplates[row['Patient Number']] || 'bwr'}
-                      onChange={e => handleTemplateChange(row['Patient Number'], e.target.value)}
-                      className="px-2 py-1 border rounded bg-white text-sm"
-                    >
-                      <option value="bws">BWS Flowsheet</option>
-                      <option value="bwr">BWR Flowsheet</option>
-                    </select>
-                    <button
-                      onClick={() => handlePrint(row)}
-                      className="bg-indigo-500 text-white px-3 py-1 rounded text-sm hover:bg-indigo-600"
-                    >
-                      Print
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => handlePrint(row)}
+                    className="bg-brand-blue text-white px-3 py-1 rounded text-sm hover:bg-brand-navy"
+                  >
+                    Print
+                  </button>
                 </td>
               </tr>
             ))}
@@ -227,7 +189,7 @@ const DataViewer = ({ data }) => {
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`px-3 py-2 border border-gray-200 rounded ${currentPage === page ? 'bg-indigo-500 text-white border-indigo-500' : 'bg-white hover:bg-gray-50'}`}
+              className={`px-3 py-2 border border-gray-200 rounded ${currentPage === page ? 'bg-brand-blue text-white border-brand-blue' : 'bg-white hover:bg-brand-light'}`}
             >
               {page}
             </button>
