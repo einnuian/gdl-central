@@ -139,12 +139,22 @@ function fillUPD7Data(reportPDF, reportData) {
 
 function fillArrayData(reportPDF, reportData) {
     const test = reportData['Test Requested'].toLowerCase();
+    const arrayResult = reportData['Array Status'].toLowerCase();
     let reportArrayFields = [];
 
     const page = reportPDF.getPages()[0];
     
     if (test.includes('array')) {
         reportArrayFields.push({ text: 'X', x: 99, y: 245, size: 16 });
+        if (arrayResult == 'normal') {
+            reportArrayFields.push({ text: 'Normal Copy Number', x: 300, y: 340, size: 12})
+        } else if (arrayResult == 'benign') {
+            reportArrayFields.push({ text: 'Benign', x: 300, y: 340, size: 12})
+        } else if (arrayResult == 'vus') {
+            reportArrayFields.push({ text: 'Variant of Unknown Significance', x: 300, y: 340, size: 12})
+        } else if (arrayResult == 'pathogenic') {
+            reportArrayFields.push({ text: 'Pathogenic', x: 300, y: 340, size: 12})
+        }
     }
     else {
         reportArrayFields.push({ text: 'X', x: 150, y: 245, size: 16 });
@@ -172,6 +182,7 @@ function fillArrayData(reportPDF, reportData) {
 function fillCDKN1CData(reportPDF, reportData) {
     const test = reportData['Test Requested'].toLowerCase();
     const methylResult = reportData['Methyl Result'].toLowerCase();
+    const cdkn1cResult = reportData['Mutation'].toLowerCase();
 
     const page = reportPDF.getPages()[0];
 
@@ -189,6 +200,10 @@ function fillCDKN1CData(reportPDF, reportData) {
                 thickness: 2,
                 color: rgb(0, 0, 0)
             });
+        } else {
+            if (cdkn1cResult === 'normal') {
+                reportCDKN1CFields.push({ text: 'No mutation. No variants', x: 154, y: 137, size: 16 });
+            }
         }
     }
     else {
