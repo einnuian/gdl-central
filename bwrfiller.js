@@ -147,13 +147,13 @@ function fillArrayData(reportPDF, reportData) {
     if (test.includes('array')) {
         reportArrayFields.push({ text: 'X', x: 99, y: 245, size: 16 });
         if (arrayResult == 'normal') {
-            reportArrayFields.push({ text: 'Normal Copy Number', x: 300, y: 340, size: 12})
+            reportArrayFields.push({ text: 'Normal Copy Number', x: 300, y: 250, size: 12})
         } else if (arrayResult == 'benign') {
-            reportArrayFields.push({ text: 'Benign', x: 300, y: 340, size: 12})
+            reportArrayFields.push({ text: 'Benign', x: 300, y: 250, size: 12})
         } else if (arrayResult == 'vus') {
-            reportArrayFields.push({ text: 'Variant of Unknown Significance', x: 300, y: 340, size: 12})
+            reportArrayFields.push({ text: 'Variant of Unknown Significance', x: 300, y: 250, size: 12})
         } else if (arrayResult == 'pathogenic') {
-            reportArrayFields.push({ text: 'Pathogenic', x: 300, y: 340, size: 12})
+            reportArrayFields.push({ text: 'Pathogenic', x: 300, y: 250, size: 12})
         }
     }
     else {
