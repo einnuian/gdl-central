@@ -202,7 +202,7 @@ function fillCDKN1CData(reportPDF, reportData) {
             });
         } else {
             if (cdkn1cResult === 'normal') {
-                reportCDKN1CFields.push({ text: 'No mutation. No variants', x: 154, y: 137, size: 16 });
+                reportCDKN1CFields.push({ text: 'No mutation. No variants', x: 300, y: 147, size: 12 });
             }
         }
     }
